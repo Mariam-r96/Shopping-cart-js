@@ -1,10 +1,6 @@
 .products-page{
     .card{
         height: 100%;
-        // &-body{
-        //     min
-        // }
-
         &-image{
             height: 200px;
             width: 100%;
@@ -15,5 +11,10 @@
                 object-fit: cover;
             }
         }
+    }
+
+    .product-category{
+        cursor: pointer;
+        font-size: 16px;
     }
 }

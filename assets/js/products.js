@@ -1,6 +1,8 @@
 
 let httpRequest , data , products_data = [];
 const product_view_row = document.querySelector(".products-page .row");
+const product_category_list = document.querySelector(".products-page .product-category__list");
+
 const search_field = document.querySelector(".products-page .search-field");
 
 // make api data request 
@@ -17,6 +19,7 @@ let makeRequest = () => {
         if (httpRequest.status === 200) {
           products_data = JSON.parse(httpRequest.responseText);
           viewAllProducts(products_data);
+          viewProductCategories(products_data);
           // console.log(products); 
 
         } else {
@@ -32,7 +35,7 @@ let makeRequest = () => {
 
 window.addEventListener("load" , makeRequest);
 
-// view all products from the api data 
+// view all products 
 const viewAllProducts = (products) => {
     return (product_view_row.innerHTML = products.map((product , key) => {
         return `
@@ -53,7 +56,21 @@ const viewAllProducts = (products) => {
     }).join(""))
 }
 
-// filter search 
+// view product-categories
+const viewProductCategories = (products) => {
+  let uniqueCategories = [];
+  products.forEach((product) => {
+      if (!uniqueCategories.includes(product.type)) {
+        uniqueCategories.push(product.type);
+      }
+  });
+
+  return (product_category_list.innerHTML = uniqueCategories.map((category , key) => {
+      return `<span class="badge bg-secondary product-category text-white p-2 me-2 mb-2">${category}</span>`
+  }).join(""))
+}
+
+// filter search
 search_field.addEventListener("keyup" , e => {
   const filtered_products = products_data.filter(product =>{
     if(product.title.toLowerCase().includes(e.target.value.toLowerCase())){
@@ -62,4 +79,12 @@ search_field.addEventListener("keyup" , e => {
   });
 
   viewAllProducts(filtered_products);
+})
+
+const product_category = document.querySelectorAll(".products-page .product-category");
+console.log(product_category)
+product_category.forEach( category =>{
+  category.addEventListener("click" , e =>{
+    console.log(e.target)
+  })
 })
